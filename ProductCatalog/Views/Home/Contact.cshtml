@@ -1,0 +1,61 @@
+﻿@{
+    ViewData["Title"] = "Contact";
+}
+
+<section class="jumbotron text-center">
+    <div class="container">
+        <h1 class="jumbotron-heading">@ViewBag.Title.</h1>
+        <p class="lead-text text-muted">@ViewBag.Message</p>
+    </div>
+</section>
+
+<div>
+    @(Html.Kendo().TabStrip()
+                                                    .Name("ContactsTabStrip")
+                                                    .Items(items =>
+                                                    {
+                                                        items.Add()
+                                                            .Text("Phone")
+                                                            .Selected(true)
+                                                            .Content(@<text>
+                                                                <p>
+                                                                    <strong>Main:</strong>
+                                                                    <span>425.555.0100</span>
+                                                                </p>
+                                                                <p>
+                                                                    <strong>After Hours:</strong>
+                                                                    <span>425.555.0199</span>
+                                                                </p>
+                                                            </text>)
+                                                                                                    .ContentHtmlAttributes(new { style = "min-height: 250px" });
+                                                                items.Add()
+                    .Text("Email")
+                    .Content(@<text>
+                        <address>
+                            <strong>Support:</strong> <a href="mailto:Support@example.com">Support@example.com</a><br />
+                            <strong>Marketing:</strong> <a href="mailto:Marketing@example.com">Marketing@example.com</a>
+                        </address>
+                    </text>)
+.ContentHtmlAttributes(new { style = "min-height: 250px" });
+                                                    items.Add()
+        .Text("Address")
+        .Content(@<text>
+            <address>
+                Progress Software Corporation<br />
+                Bedford, MA 01730<br />
+                14 Oak Park Drive<br />
+                <abbr title="Phone">Phone:</abbr>
+                +1-781-280-4000
+            </address>
+            <address>
+                Progress Software Europe BV<br />
+                Rotterdam, 3067 GG<br />
+                Schorpioenstraat 67<br />
+                <abbr title="Phone">Phone:</abbr>
+                +31-10-235-1111
+            </address>
+        </text>)
+.ContentHtmlAttributes(new { style = "min-height: 250px" });
+                                                })
+    )
+</div>

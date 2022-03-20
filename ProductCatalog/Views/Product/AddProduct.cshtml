@@ -1,0 +1,45 @@
+﻿@using Microsoft.AspNetCore.Components
+@using ProductCatalog.Models
+@using ProductCatalog.Services
+@inject ProductService productService
+@inject NavigationManager NavigationManager
+@{
+    ViewData["Title"] = "AddProduct";
+}
+<div class="demo-section k-content">
+    <div id="validation-success"></div>
+
+    <kendo-form name="exampleForm" form-data="@Model" method="POST" asp-action="Create" on-clear="onFormClear">
+        <validatable validate-on-blur="true" validation-summary="true" />
+        <form-items>
+            <form-item type="group">
+                <item-label text="Registration Form" />
+                <form-items>
+                    <form-item field="Displayname">
+                        <item-label text="Displayname:" />
+                        <textbox-editor placeholder="Displayname"></textbox-editor>
+                    </form-item>
+                    <form-item field="Brand">
+                        <item-label text="Brand:" />
+                        <textbox-editor placeholder="Brand"></textbox-editor>
+                    </form-item>
+                    <form-item field="Price">
+                        <item-label text="Price:" />
+                        <numerictextbox-editor></numerictextbox-editor>
+                    </form-item>
+                    <form-item field="Category">
+                        <item-label text="Category:" />
+                        <textbox-editor placeholder="Category"></textbox-editor>
+                    </form-item>
+                </form-items>
+            </form-item>
+        </form-items>
+    </kendo-form>
+</div>
+
+<script>
+
+    function onFormClear(e) {
+        $("#validation-success").html("");
+    }
+</script>

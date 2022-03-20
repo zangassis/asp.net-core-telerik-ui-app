@@ -1,0 +1,74 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ProductCatalog</title>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+	<link href="https://cdn.kendostatic.com/2022.1.301/styles/kendo.bootstrap-main.min.css" rel="stylesheet" type="text/css" />
+	<script src="https://cdn.kendostatic.com/2022.1.301/js/jquery.min.js"></script>
+	<script src="https://cdn.kendostatic.com/2022.1.301/js/jszip.min.js"></script>
+	<script src="https://cdn.kendostatic.com/2022.1.301/js/kendo.all.min.js"></script>
+	<script src="https://cdn.kendostatic.com/2022.1.301/js/kendo.aspnetmvc.min.js"></script>
+</head>
+<body class="k-content">
+    <nav class="navbar navbar-inverse navbar-fixed-top p-3">
+        <div class="container p-0 p-sm-3">
+            <div class="navbar-header">
+                <kendo-button name="configure" tag="button" icon="menu" theme-color="ThemeColor.Primary" class="k-rpanel-toggle btn-toggle"></kendo-button>
+                <a asp-controller="Home" asp-action="Index" class="navbar-brand">Your .NET Core Application</a>
+            </div>
+            <div id="responsive-panel" class="navbar-left">
+                <kendo-responsivepanel name="responsive-panel" auto-close="false" breakpoint="768" orientation="top">
+                    @(Html.Kendo().Menu()
+                                .Name("Menu")
+                                .Items(items =>
+                                {
+                                    items.Add().Text("Home").Action("Index", "Home", new { area = "" });
+                                    items.Add().Text("About").Action("About", "Home", new { area = "" });
+                                    items.Add().Text("Contact").Action("Contact", "Home", new { area = "" });
+                                    items.Add().Text("Add Product").Action("AddProduct", "Product", new { area = "" });
+                                    items.Add().Text("Products").Action("Index", "Product", new { area = "" });
+                                })
+                    )
+                </kendo-responsivepanel>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <div class="container">
+            @RenderBody()
+        </div>
+    </main>
+
+    <footer class="footer text-center d-flex align-items-center">
+        <div class="container pb-0">
+            <hr />
+            <p class="text-muted">
+                Copyright © @DateTime.Now.Year Progress Software Corporation and/or its subsidiaries or affiliates. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <environment names="Development">
+        <script src="~/lib/bootstrap/js/bootstrap.js"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"></script>
+    </environment>
+    @RenderSection("scripts", required: false)
+</body>
+</html>
