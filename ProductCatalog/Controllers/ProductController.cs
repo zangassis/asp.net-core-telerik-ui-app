@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using ProductCatalog.Data.Context;
 using ProductCatalog.Models;
 using ProductCatalog.Services;
@@ -35,8 +35,7 @@ namespace ProductCatalog.Controllers
         public IActionResult Create(ProductDtoViewModel productDto)
         {
             _productService.AddProduct(productDto);
-
-            return RedirectToAction(nameof(Index));
+            return View(nameof(AddProduct));
         }
 
         [HttpPut]
@@ -44,7 +43,7 @@ namespace ProductCatalog.Controllers
         {
             _productService.UpdateProduct(productDto);
 
-            return RedirectToAction(nameof(Index));
+            return View(nameof(Index));
         }
 
         [HttpDelete]
@@ -52,7 +51,7 @@ namespace ProductCatalog.Controllers
         {
             _productService.DeleteProduct(productDto);
 
-            return RedirectToAction(nameof(Index));
+            return View(nameof(Index));
         }
     }
 }
