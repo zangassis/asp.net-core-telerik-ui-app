@@ -5,8 +5,11 @@ namespace ProductCatalog.Data.Context
 {
     public class ApplicationDbContext : DbContext
     {
-        public ApplicationDbContext(DbContextOptions options) : base(options)
+        public ISession _session;
+
+        public ApplicationDbContext(DbContextOptions options, IHttpContextAccessor httpContextAccessor) : base(options)
         {
+            _session = httpContextAccessor.HttpContext.Session;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
@@ -16,5 +19,6 @@ namespace ProductCatalog.Data.Context
         public DbSet<ProductPriceViewModel> ProductPrices { get; set; }
         public DbSet<CategoryViewModel> Categories { get; set; }
         public DbSet<BrandViewModel> Brands { get; set; }
+        public ISession Session { get { return _session; } }
     }
 }

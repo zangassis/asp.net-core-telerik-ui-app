@@ -1,4 +1,7 @@
+using Kendo.Mvc.Extensions;
+using Kendo.Mvc.UI;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using ProductCatalog.Data.Context;
 using ProductCatalog.Models;
 using ProductCatalog.Services;
@@ -18,10 +21,7 @@ namespace ProductCatalog.Controllers
 
         public IActionResult Index()
         {
-            ViewData["Message"] = "Your product page.";
-
-            var model = _productService.GetProducts();
-            return View(model);
+            return View();
         }
 
         public IActionResult AddProduct()
@@ -31,27 +31,74 @@ namespace ProductCatalog.Controllers
             return View();
         }
 
+        [HttpGet]
+        public DataSourceResult Get([DataSourceRequest] DataSourceRequest request)
+        {
+            return _productService.Read().ToDataSourceResult(request);
+        }
+
+        [HttpPost]
+        public IActionResult AddProduct(ProductDtoViewModel productDto)
+        {
+            if (!ModelState.IsValid)
+                return View(productDto);
+            else
+            {
+                _productService.Create(productDto);
+                return RedirectToAction(nameof(Index));
+            }
+        }
+
         [HttpPost]
         public IActionResult Create(ProductDtoViewModel productDto)
         {
-            _productService.AddProduct(productDto);
-            return View(nameof(AddProduct));
+            ModelState.Remove("CreationDate");
+            ModelState.Remove("LastUpdateDate");
+            ModelState.Remove("Id");
+
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState.Values.SelectMany(v => v.Errors).Select(error => error.ErrorMessage));
+
+            var newProduct = _productService.Create(productDto);
+
+            return new ObjectResult(new DataSourceResult { Data = new[] { newProduct }, Total = 1 });
         }
 
         [HttpPut]
-        public IActionResult Update(ProductDtoViewModel productDto)
+        public IActionResult Update(Guid id, ProductDtoViewModel productDto)
         {
-            _productService.UpdateProduct(productDto);
+            if (ModelState.IsValid && id == productDto.Id)
+            {
+                try
+                {
+                    _productService.Update(productDto);
+                }
+                catch (DbUpdateConcurrencyException)
+                {
+                    return new NotFoundResult();
+                }
 
-            return View(nameof(Index));
+                return new StatusCodeResult(200);
+            }
+            else
+            {
+                return BadRequest(ModelState.Values.SelectMany(v => v.Errors).Select(error => error.ErrorMessage));
+            }
         }
 
         [HttpDelete]
-        public IActionResult Delete(ProductDtoViewModel productDto)
+        public IActionResult Delete(Guid id)
         {
-            _productService.DeleteProduct(productDto);
+            try
+            {
+                _productService.Destroy(new ProductDtoViewModel { Id = id });
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return new NotFoundResult();
+            }
 
-            return View(nameof(Index));
+            return new StatusCodeResult(200);
         }
     }
 }

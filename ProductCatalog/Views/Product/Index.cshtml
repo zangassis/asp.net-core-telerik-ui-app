@@ -10,12 +10,12 @@
 	  .Name("grid")
 	  .Columns(columns =>
 	  {
-		  columns.Bound(p => p.Displayname).Width(300);
+		columns.Bound(p => p.Displayname).Width(300);
         columns.Bound(p => p.Price).Width(105);
         columns.Bound(p => p.Active).Width(130);
         columns.Bound(p => p.Category).Width(130);
         columns.Bound(p => p.Brand).Width(125);
-		  columns.Command(command => { command.Edit(); command.Destroy(); }).Width(250);
+		columns.Command(command => { command.Edit(); command.Destroy(); }).Width(250);
 	  })
 	  .ToolBar(tools =>
 	  {
@@ -35,7 +35,7 @@
 			.Read(read => read.Action("Get", "Product"))
 			.Create(create => create.Action("Create", "Product"))
 			.Update(update => update.Action("Update", "Product"))
-			.Destroy(destroy => destroy.Action("Delete", "Product"))			
+			.Destroy(destroy => destroy.Action("Delete", "Product", new { id = "{0}" }))			
 	  )
 )
 

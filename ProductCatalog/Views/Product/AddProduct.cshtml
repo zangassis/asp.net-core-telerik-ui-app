@@ -9,8 +9,7 @@
 <div class="demo-section k-content">
     <div id="validation-success"></div>
 
-    <kendo-form name="exampleForm" form-data="@Model" method="POST" asp-action="Create" on-clear="onFormClear">
-        <validatable validate-on-blur="true" validation-summary="true" />
+    <kendo-form name="exampleForm" form-data="@Model" on-validate-field="onFormValidateField" on-clear="onFormClear" action="AddProduct" method="POST">
         <form-items>
             <form-item type="group">
                 <item-label text="Registration Form" />
@@ -34,10 +33,14 @@
                 </form-items>
             </form-item>
         </form-items>
+        <validatable validate-on-blur="true" />
     </kendo-form>
 </div>
 
 <script>
+       function onFormValidateField(e) {
+        $("#validation-success").html("");
+    }
 
     function onFormClear(e) {
         $("#validation-success").html("");
