@@ -67,6 +67,10 @@ namespace ProductCatalog.Controllers
         [HttpPut]
         public IActionResult Update(Guid id, ProductDtoViewModel productDto)
         {
+            ModelState.Remove("CreationDate");
+            ModelState.Remove("LastUpdateDate");
+            ModelState.Remove("Id");
+        
             if (ModelState.IsValid && id == productDto.Id)
             {
                 try
