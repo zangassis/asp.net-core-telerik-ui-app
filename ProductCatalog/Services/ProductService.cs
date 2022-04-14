@@ -13,37 +13,6 @@ namespace ProductCatalog.Services
             _dbContext = dbContext;
         }
 
-        public List<ProductDtoViewModel> GetProducts()
-        {
-            var products = _dbContext.Products.ToList();
-            var categories = _dbContext.Categories.ToList();
-            var brands = _dbContext.Brands.ToList();
-            var prices = _dbContext.ProductPrices.ToList();
-            var productsDto = new List<ProductDtoViewModel>();
-
-            foreach (var product in products)
-            {
-                var productCategory = categories.Where(p => p.ProductId == product.Id).FirstOrDefault().Name;
-                var productBrand = brands.FirstOrDefault(b => b.Id == product.BrandId).Name;
-                var productPrice = prices.FirstOrDefault(x => x.ProductId == product.Id).Price;
-
-                var productDto = new ProductDtoViewModel()
-                {
-                    Id = product.Id,
-                    Displayname = product.Displayname,
-                    CreationDate = product.CreationDate,
-                    LastUpdateDate = product.LastUpdateDate,
-                    Price = productPrice,
-                    Active = product.Active,
-                    Brand = productBrand,
-                    Category = productCategory
-                };
-
-                productsDto.Add(productDto);
-            }
-            return productsDto;
-        }
-
         public IEnumerable<ProductDtoViewModel> Read() => GetAll();
 
         public IList<ProductDtoViewModel> GetAll()
